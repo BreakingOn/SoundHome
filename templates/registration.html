@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundHome - Музыкальный сервис</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --primary-dark: #27ae60;
+            --primary-light: #58d68d;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                              url('https://example.com/music-bg.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+       .header {
+    background-color: var(--primary-dark);
+    padding: 15px 0;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    height: 60px; 
+}
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--white);
+        }
+        
+        .auth-link {
+            background-color: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-link:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        .username {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        
+        .logout-link {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        
+        .logout-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    margin-top: 70px; 
+}
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo p {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        .auth-form {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #777;
+            flex: 1;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .footer-text {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #777;
+        }
+        
+        .footer-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">SoundHome</a>
+            <div class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/forum">Форум</a>
+                <div class="user-info">
+                    {% if current_user %}
+                        <span class="username">{{ current_user }}</span>
+                        <a href="/logout" class="logout-link">Выйти</a>
+                    {% else %}
+                        <a href="/auth" class="auth-link">Войти</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="logo">
+            <h1>SoundHome</h1>
+            <p>Ваш дом для любимой музыки</p>
+        </div>
+        
+        <div class="auth-form">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('login')">Вход</div>
+                <div class="tab" onclick="switchTab('register')">Регистрация</div>
+            </div>
+
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+            
+            <form id="loginForm" method="post" action="/login">
+                <div id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Логин</label>
+                        <input type="text" id="login-email" name="login" class="form-control" placeholder="Ваш логин" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Пароль</label>
+                        <input type="password" id="login-password" name="password" class="form-control" placeholder="Ваш пароль" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn">Войти</button>
+                    </div>
+                    
+                    <p class="footer-text">
+                        Нет аккаунта? <a onclick="switchTab('register')">Зарегистрируйтесь</a>
+                    </p>
+                </div>
+            </form>
+            
+            <form id="registerForm" method="post" action="/register">
+                <div id="register-form" class="hidden">
+                    <div class="form-group">
+                        <label for="reg-email">Логин (мин. 8 символов)</label>
+                        <input type="text" id="reg-email" name="login" class="form-control" placeholder="Придумайте логин" minlength="8" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-password">Пароль</label>
+                        <input type="password" id="reg-password" name="password" class="form-control" placeholder="Придумайте пароль" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn">Зарегистрироваться</button>
+                    </div>
+                    
+                    <p class="footer-text">
+                        Уже есть аккаунт? <a onclick="switchTab('login')">Войдите</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const tabs = document.querySelectorAll('.tab');
+            
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                tabs[0].classList.remove('active');
+                tabs[1].classList.add('active');
+            }
+        }
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        if (error) {
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.textContent = error;
+            document.querySelector('.auth-form').prepend(errorElement);
+        }
+        document.getElementById('login-btn').addEventListener('click', async () => {
+    const form = document.getElementById('loginForm');
+    const formData = new FormData(form);
+    
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            body: new URLSearchParams(formData),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        
+        if (response.ok) {
+            window.location.href = '/';
+        } else {
+            const error = await response.json();
+            showError(error.detail);
+        }
+    } catch (error) {
+        showError('Ошибка сети');
+    }
+});
+    </script>
+</body>
+</html>

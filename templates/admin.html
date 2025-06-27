@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель | SoundHome</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --primary-dark: #27ae60;
+            --danger-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--light-bg);
+        }
+        
+        h1 {
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        .comment {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        
+        .comment-discussion {
+            font-style: italic;
+        }
+        
+        .comment-date {
+            color: #777;
+            font-size: 0.9em;
+        }
+        
+        .comment-content {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        
+        .delete-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Админ-панель: Управление комментариями</h1>
+    
+    <div class="comments-list">
+        {% for comment in comments %}
+        <div class="comment" id="comment-{{ comment.id }}">
+            <div class="comment-header">
+                <div>
+                    <span class="comment-author">{{ comment.author }}</span>
+                    <span class="comment-date">{{ comment.created_at }}</span>
+                </div>
+                <div class="comment-discussion">
+                    Обсуждение: <a href="/forum/{{ comment.discussion_id }}">{{ comment.discussion_title }}</a>
+                </div>
+            </div>
+            <div class="comment-content">
+                {{ comment.content }}
+            </div>
+        </div>
+        {% else %}
+        <p>Нет комментариев для модерации.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        async function deleteComment(commentId) {
+            if (!confirm('Вы уверены, что хотите удалить этот комментарий?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/comments/${commentId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    document.getElementById(`comment-${commentId}`).remove();
+                } else {
+                    alert('Ошибка при удалении комментария');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ошибка при удалении комментария');
+            }
+        }
+    </script>
+</body>
+</html>

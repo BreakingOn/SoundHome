@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundHome</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --primary-dark: #27ae60;
+            --primary-light: #58d68d;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+        
+        /* Шапка сайта */
+         .header {
+            background-color: var(--primary-dark);
+            padding: 15px 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--white);
+        }
+        
+        .auth-link {
+            background-color: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-link:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+.username {
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.logout-link {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.logout-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.auth-link {
+    background-color: rgba(255,255,255,0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.auth-link:hover {
+    background-color: rgba(255,255,255,0.3);
+}
+        
+        /* Остальные стили остаются без изменений */
+        .upload-container {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        
+        .track-info {
+            margin-bottom: 20px;
+        }
+        
+        .platform-result {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .error {
+            color: #d32f2f;
+            background-color: #ffebee;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        
+        .loading {
+            color: #1976d2;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .original-result {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .common-result {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #2196f3;
+        }
+        
+        .confidence-meter {
+            background: #e0e0e0;
+            border-radius: 20px;
+            margin: 15px 0;
+            height: 20px;
+            position: relative;
+        }
+        
+        .meter-fill {
+            background: #4caf50;
+            height: 100%;
+            border-radius: 20px;
+        }
+        
+        .confidence-meter span {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            text-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+        
+        .originality-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .originality-badge.original {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .originality-badge.common {
+            background-color: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+    <div class="header-container">
+        <div class="logo">SoundHome</div>
+        <div class="nav-links">
+            <a href="/">Главная</a>
+            <a href="/forum">Форум</a>
+            <div class="user-info">
+                {% if current_user %}
+                    <p>Вы вошли как {{ current_user }}. <a href="/profile">Перейти в профиль</a></p>
+                    <a href="/logout" class="logout-link">Выйти</a>
+                {% else %}
+                    <a href="/auth" class="auth-link">Войти</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+    
+    <h1>SoundHome</h1>
+    <p>Загрузите трек для проверки на оригинальность</p>
+    
+    <div class="upload-container">
+        <input type="file" id="file-input" accept="audio/*">
+        <button class="upload-btn" onclick="document.getElementById('file-input').click()">
+            Выберите аудиофайл
+        </button>
+        <p id="file-name" style="margin-top: 10px;"></p>
+    </div>
+    
+    <div id="result">
+        <div id="result-content"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const fileName = document.getElementById('file-name');
+        const resultDiv = document.getElementById('result');
+        const resultContent = document.getElementById('result-content');
+        
+        fileInput.addEventListener('change', async function(e) {
+            if (!fileInput.files.length) return;
+            
+            const file = fileInput.files[0];
+            fileName.textContent = `Выбрано: ${file.name}`;
+            
+   
+            resultDiv.style.display = 'block';
+            resultContent.innerHTML = '<div class="loading">Анализ трека</div>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await fetch('/api/recognize', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Неизвестная ошибка');
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                resultContent.innerHTML = `
+                    <div class="error">
+                        <h3>Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+        
+        function displayResults(data) {
+            let html = '';
+            
+            if (data.status === "original") {
+                html = `
+                    <div class="original-result">
+                        <h3>🎉 Оригинальный трек!</h3>
+                        <p>${data.message}</p>
+                        <div class="confidence-meter">
+                            <div class="meter-fill" style="width: ${data.originality_score}%"></div>
+                            <span>${data.originality_score}% уверенности</span>
+                        </div>
+                        <p>Этот трек не найден на основных музыкальных платформах.</p>
+                    </div>
+                `;
+            } else {
+                html = `
+                    <div class="track-info">
+                        <h2>${data.metadata.artist} - ${data.metadata.title}</h2>
+                        ${data.metadata.genres ? `<p>Жанр: ${data.metadata.genres}</p>` : ''}
+                        
+                        <div class="originality-badge ${data.originality === 'common' ? 'common' : 'original'}">
+                            ${data.originality === 'common' ? 'Известный трек' : 'Потенциально оригинальный'}
+                        </div>
+                        
+                        <h3>Найден на платформах:</h3>
+                `;
+                
+                if (data.search_results.length > 0) {
+                    data.search_results.forEach(result => {
+                        html += `
+                            <div class="platform-result">
+                                <strong>${result.source}</strong>
+                                <p><a href="${result.url}" target="_blank">${result.title}</a></p>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += `
+                        <div class="original-result">
+                            <p>Трек не найден на музыкальных платформах</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            resultContent.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

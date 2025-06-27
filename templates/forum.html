@@ -1,0 +1,209 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форум | SoundHome</title>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --primary-dark: #27ae60;
+            --primary-light: #58d68d;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+            --white: #ffffff;
+            --gray: #e0e0e0;
+            --dark-gray: #777;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background-color: var(--primary-dark);
+            padding: 15px 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+        
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .forum-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+        
+        .new-topic-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .new-topic-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .discussions-list {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .discussion-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .discussion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .discussion-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .discussion-title a {
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+        
+        .discussion-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .discussion-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .discussion-track {
+            font-style: italic;
+        }
+        
+        .no-discussions {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dark-gray);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">SoundHome</a>
+            <div class="nav-links">
+                <a href="/">Главная</a>
+                <a href="/forum">Форум</a>
+                {% if current_user %}
+                    <a href="/profile">Профиль</a>
+                    <a href="/logout">Выйти</a>
+                {% else %}
+                    <a href="/auth">Войти</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="forum-header">
+            <h1 class="forum-title">Обсуждения</h1>
+            {% if current_user %}
+                <a href="/profile" class="new-topic-btn">Создать обсуждение</a>
+            {% else %}
+                <a href="/auth" class="new-topic-btn">Войти для создания обсуждения</a>
+            {% endif %}
+        </div>
+        
+        <div class="discussions-list">
+            {% if discussions %}
+                {% for discussion in discussions %}
+                <div class="discussion-item">
+                    <h2 class="discussion-title">
+                        <a href="/forum/{{ discussion.id }}">{{ discussion.title }}</a>
+                    </h2>
+                    <div class="discussion-meta">
+                        <span>Автор: {{ discussion.author }}</span>
+                        <span>Дата: {{ discussion.created_at[:10] }}</span>
+                    </div>
+                    <div class="discussion-track">
+                        Трек: {{ discussion.track_artist }} - {{ discussion.track_title }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-discussions">Пока нет обсуждений. Будьте первым!</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
